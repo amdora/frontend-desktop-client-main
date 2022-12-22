@@ -1,0 +1,61 @@
+<div class="my-1 px-1 py-1 me-2">
+  <mat-card>
+    <mat-card-content [style.overflow]="'auto'" [style.height.px]="height">
+      <div class="mb-3">
+        <igx-input-group type="search" class="search">
+          <igx-prefix>
+            <igx-icon>search</igx-icon>
+          </igx-prefix>
+          <input
+            #search
+            igxInput
+            placeholder="Search cars"
+            [(ngModel)]="searchCar"
+          />
+          <igx-suffix
+            *ngIf="search.value.length > 0"
+            (click)="searchCar = null"
+          >
+            <igx-icon>clear</igx-icon>
+          </igx-suffix>
+        </igx-input-group>
+      </div>
+
+      <div class="list-sample">
+        <igx-list>
+          <div
+            *ngFor="let car of this.manager.getAll() | igxFilter: filterCars"
+          >
+            <igx-list-item
+              (click)="goTo(car)"
+              igxRipple
+              igxRippleTarget=".igx-list__item-content"
+              #item
+              [style.background-color]="car.isActive ? 'grey' : 'white'"
+            >
+              <igx-avatar
+                igxListThumbnail
+                [src]="car['images'][0]"
+              ></igx-avatar>
+              <span igxListLineTitle>{{ car.make }} {{ car.model }}</span>
+              <span igxListLineSubTitle
+                >Price <b></b>£{{ car.price }} | Margin: £{{
+                  car.valuation["valuation"]["cap_margin"]
+                }}</span
+              >
+              <igx-icon
+                igxListAction
+                [style.color]="car.isFavorite ? 'orange' : 'lightgray'"
+                (click)="toggleFavorite(car)"
+                >star</igx-icon
+              >
+              <igx-icon *ngIf="car.unread" [style.color]="'blue'"
+                >circle</igx-icon
+              >
+            </igx-list-item>
+          </div>
+        </igx-list>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>
